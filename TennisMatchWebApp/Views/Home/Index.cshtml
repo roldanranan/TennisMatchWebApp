@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tennis Match Scores Card</title>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet">
+    <link href="~/Content/animate.css" rel="stylesheet">
+    <link href="~/Content/style.css" rel="stylesheet">
+    <link href="~/Content/iCheck/custom.css" rel="stylesheet">
+    <link href="~/Content/datepicker3.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>Tennis</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a data-toggle="modal" href="#modal-form"><strong>Add Tennis Match</strong></a>
+                        </li>
+                        @*<li class="active">
+                                <strong>Static Tables</strong>
+                            </li>*@
+                    </ol>
+                </div>
+            </div>
+
+
+            @*<div class="text-center">
+                    <a data-toggle="modal" class="btn btn-primary" href="#modal-form">Form in simple modal box</a>
+                </div>*@
+            <div id="modal-form" class="modal fade" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h3 class="m-t-none">New Tennis Match</h3>
+
+                                    <form role="form" id="matchForm">
+                                        <div class="form-group"><label>Location</label> <input type="text" placeholder="Enter location" class="form-control"></div>
+                                        @*<div class="form-group"><label>Name</label> <input type="text" placeholder="Enter name" class="form-control"></div>
+                                            <div class="form-group"><label>Password</label> <input type="password" placeholder="Password" class="form-control"></div>
+                                            <div>
+                                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Log in</strong></button>
+                                                <label> <input type="checkbox" class="i-checks"> Remember me </label>
+                                            </div>*@
+
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="ibox float-e-margins">
+                                                    <div class="ibox-title">
+                                                        @*<h5>Match</h5>
+                                                            <p class="pull-right">
+                                                                <span class="location"><strong>Los Angeles</strong></span>
+                                                                <span> - </span>
+                                                                <span class="date dateMatch">11/10/2016</span>
+                                                            </p>*@
+                                                    </div>
+                                                    <div class="ibox-content">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Name</th>
+                                                                    <th>Set 1</th>
+                                                                    <th>Set 2</th>
+                                                                    <th>Set 3</th>
+                                                                    <th>Winner</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>1</td>
+                                                                    <td id="p1Name_input"><input class="col-lg-10 form-control" type="text" placeholder="Player 1" /></td>
+                                                                    <td id="p1Set1_input"><input class="col-sm-2 form-control" type="number" placeholder="0" /></td>
+                                                                    <td id="p1Set2_input"><input class="col-sm-2 form-control" type="number" placeholder="0" /></td>
+                                                                    <td id="p1Set3_input"><input class="form-control" type="number" placeholder="0" /></td>
+                                                                    <td id="winner1"><input class="col-sm-8" type="radio" value="true" /></td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>2</td>
+                                                                    <td id="p2Name_input"><input class="col-lg-10 form-control" type="text" placeholder="Player 2" /></td>
+                                                                    <td id="p2Set1_input"><input class="col-sm-2 form-control" type="number" placeholder="0" /></td>
+                                                                    <td id="p2Set2_input"><input class="col-sm-2 form-control" type="number" placeholder="0" /></td>
+                                                                    <td id="p2Set3_input"><input class="form-control" type="number" placeholder="0" /></td>
+                                                                    <td id="winner2"><input class="col-sm-8" type="radio" value="true" /></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="form-group" id="data_1">
+                                                            <label class="font-noraml">Date</label>
+                                                            <div class="input-group date">
+                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" value="03/04/2014">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary" type="submit" id="submitBtn">Submit</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="matchTables" class="wrapper wrapper-content animated fadeInRight"></div>
+
+        </div>
+    </div>
+
+
+
+    <!-- Mainly scripts -->
+    <script src="~/Scripts/jquery-2.1.1.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/tennis.services.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+
+    <script type="text/template" class="tableTemplate">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Match</h5>
+                        <p class="pull-right">
+                            <span class="location"><strong>Los Angeles</strong></span>
+                            <span> - </span>
+                            <span class="date dateMatch">11/10/2016</span>
+                        </p>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Set 1</th>
+                                    <th>Set 2</th>
+                                    <th>Set 3</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td class="p1Name">Mark</td>
+                                    <td class="p1Set1">4</td>
+                                    <td class="p1Set2">4</td>
+                                    <td class="p1Set3">4</td>
+                                    <td class="winner1"></td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td>2</td>
+                                    <td class="p2Name">Mark</td>
+                                    <td class="p2Set1">4</td>
+                                    <td class="p2Set2">4</td>
+                                    <td class="p2Set3">4</td>
+                                    <td class="winner2"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            getMatches();
+            datePicker();
+        });
+
+        var datePicker = function () {
+            $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+        }
+
+        var matches = [];
+
+        var getMatches = function () {
+            tennis_GetMatches(onGetMatchesSuccess, onGetMatchesError);
+        };
+
+        var onGetMatchesSuccess = function (responseData) {
+            if (responseData) {
+                console.log("hasvalue");
+                loopMatches(responseData);
+            }
+        };
+
+        var onGetMatchesError = function () {
+            console.log("Get Matches Failed")
+        };
+
+        var loopMatches = function (matches) {
+            for (var i = 0; i < matches.length; i++) {
+                renderMatch(matches[i]);
+            }
+        }
+
+        var renderMatch = function (match) {
+            var $newTable = $($('.tableTemplate').html());
+
+            $newTable.find('.location').text(match.location);
+            $newTable.find('.dateMatch').text(match.date);
+            $newTable.find('.p1Name').text(match.p1Name);
+            $newTable.find('.p1Set1').text(match.p1Set1);
+            $newTable.find('.p1Set2').text(match.p1Set2);
+            $newTable.find('.p1Set3').text(match.p1Set3);
+            $newTable.find('.p2Name').text(match.p2Name);
+            $newTable.find('.p2Set1').text(match.p2Set1);
+            $newTable.find('.p2Set2').text(match.p2Set2);
+            $newTable.find('.p2Set3').text(match.p2Set3);
+            if (match.player1 == match.winnerId) {
+                $newTable.find('.winner1').text("Winner");
+            } else {
+                $newTable.find('.winner2').text("Winner");
+            };
+            $newTable.closest('.row').attr("id", match.matchId);
+            $('#matchTables').append($newTable);
+            //$newTable.appendTo('#matchTables');
+        }
+    </script>
+
+</body>
+
+</html>

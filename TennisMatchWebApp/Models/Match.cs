@@ -9,7 +9,7 @@ namespace TennisMatchWebApp.Models
     {
         public int MatchId { get; set; }
 
-        public int Player1 { get; set; }
+        public int? Player1 { get; set; }
 
         public string P1Name { get; set; }
 
@@ -19,7 +19,7 @@ namespace TennisMatchWebApp.Models
 
         public int P1Set3 { get; set; }
 
-        public int Player2 { get; set; }
+        public int? Player2 { get; set; }
 
         public string P2Name { get; set; }
 

@@ -3,8 +3,8 @@
 
     var settings = {
         cache: false
-        , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
-        , data: data
+        , contentType: "application/json; charset=UTF-8"
+        , data: JSON.stringify(data)
         , dataType: "json"
         , success: onSuccess
         , error: onError
@@ -44,9 +44,40 @@ var tennis_matchUpdate = function (id, data, onSuccess, onError) {
     $.ajax(url, settings);
 }
 
+var tennis_matchSearch = function (data, onSuccess, onError) {
+
+    var url = "/api/tennis/search/";
+    var settings = {
+        cache: false
+    , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+    , data: data
+    , dataType: "json"
+    , success: onSuccess
+    , error: onError
+    , type: "PUT"
+    };
+
+    $.ajax(url, settings);
+}
+
 var tennis_GetMatches = function (onSuccess, onError) {
 
     var url = "/api/tennis/matches";
+    var settings = {
+        cache: false
+    , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+    , dataType: "json"
+    , success: onSuccess
+    , error: onError
+    , type: "GET"
+    };
+
+    $.ajax(url, settings);
+}
+
+var tennis_GetLocation = function (onSuccess, onError) {
+
+    var url = "/api/tennis/location";
     var settings = {
         cache: false
     , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
@@ -84,6 +115,21 @@ var tennis_matchDelete = function (id, onSuccess, onError) {
     , success: onSuccess
     , error: onError
     , type: "DELETE"
+    };
+
+    $.ajax(url, settings);
+}
+
+var tennis_GetSearchBar = function (onSuccess, onError) {
+
+    var url = "/api/tennis/search/data";
+    var settings = {
+        cache: false
+    , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+    , dataType: "json"
+    , success: onSuccess
+    , error: onError
+    , type: "GET"
     };
 
     $.ajax(url, settings);

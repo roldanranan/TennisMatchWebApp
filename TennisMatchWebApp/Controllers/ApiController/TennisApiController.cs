@@ -47,7 +47,7 @@ namespace TennisMatchWebApp.Controllers.Api
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
 
-            int response = TennisService.UpdateMatch(model);
+            PlayerMatchScore response = TennisService.UpdateMatch(model);
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
@@ -60,7 +60,7 @@ namespace TennisMatchWebApp.Controllers.Api
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
 
-            List<Match> response = TennisService.GetMatches();
+            List<Match> response = TennisService.GetAllMatches;
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
@@ -73,12 +73,12 @@ namespace TennisMatchWebApp.Controllers.Api
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
 
-            List<Player> response = TennisService.GetPlayers();
+            List<Player> response = TennisService.GetPlayers;
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [Route("match/{id}/delete")]
-        [HttpPut]
+        [HttpDelete]
         public HttpResponseMessage DeleteMatch(int id)
         {
             if (!ModelState.IsValid)
@@ -87,6 +87,39 @@ namespace TennisMatchWebApp.Controllers.Api
             }
 
             int response = TennisService.DeleteMatch(id);
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        [Route("search")]
+        [HttpPut]
+        public HttpResponseMessage SearchMatches(Search search)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+
+            IEnumerable<Match> response = TennisService.SearchMatches(search);
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        [Route("search/data")]
+        [HttpGet]
+        public HttpResponseMessage SearchData()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+
+            PopulateSearch response = new PopulateSearch();
+            IEnumerable<string> player = TennisService.PlayerSearchBar();
+            IEnumerable<string> location = TennisService.LocationSearchBar();
+            IEnumerable<DateTime> date = TennisService.DateSearchBar();
+
+            response.Players = player;
+            response.Locations = location;
+            response.Dates = date;
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
     }

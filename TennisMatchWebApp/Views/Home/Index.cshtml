@@ -13,6 +13,9 @@
     <link href="~/Content/style.css" rel="stylesheet">
     <link href="~/Content/iCheck/custom.css" rel="stylesheet">
     <link href="~/Content/datepicker3.css" rel="stylesheet" />
+    <link href="~/Content/chosen/chosen.css" rel="stylesheet" />
+    <link href="~/Content/sweetalert.css" rel="stylesheet" />
+    <link href="~/Content/footable/footable.core.css" rel="stylesheet" />
 
 </head>
 
@@ -26,19 +29,43 @@
                     <h2>Tennis</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a data-toggle="modal" href="#modal-form"><strong>Add Tennis Match</strong></a>
+                            <button id="addBtn" class="btn-sm" data-toggle="modal" href="#modal-form"><strong>Add Tennis Match</strong></button>
                         </li>
-                        @*<li class="active">
-                                <strong>Static Tables</strong>
-                            </li>*@
+
                     </ol>
                 </div>
             </div>
 
 
-            @*<div class="text-center">
-                    <a data-toggle="modal" class="btn btn-primary" href="#modal-form">Form in simple modal box</a>
-                </div>*@
+            <div>
+                <div class="form-group inline">
+                    <label class="font-noraml">Search By Player</label>
+                    <div class="input-group">
+                        <select id="searchPlayer" data-placeholder="Search by Player" class="chosen-select" style="width:350px;" tabindex="2">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group inline">
+                    <label class="font-noraml">Search By Location</label>
+                    <div class="input-group">
+                        <select id="searchLocation" data-placeholder="Search by Location" class="chosen-select" style="width:350px;" tabindex="2">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group inline">
+                    <label class="font-noraml">Search By Date</label>
+                    <div class="input-group">
+                        <select id="searchDate" data-placeholder="Search by Date" class="chosen-select" style="width:350px;" tabindex="2">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button id="searchBtn" class="btn-sm">Search</button>
+
             <div id="modal-form" class="modal fade" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -48,31 +75,36 @@
                                     <h3 class="m-t-none">New Tennis Match</h3>
 
                                     <form role="form" id="matchForm">
-                                        <div class="form-group"><label>Location</label> <input type="text" placeholder="Enter location" class="form-control"></div>
-                                        @*<div class="form-group"><label>Name</label> <input type="text" placeholder="Enter name" class="form-control"></div>
-                                            <div class="form-group"><label>Password</label> <input type="password" placeholder="Password" class="form-control"></div>
-                                            <div>
-                                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Log in</strong></button>
-                                                <label> <input type="checkbox" class="i-checks"> Remember me </label>
-                                            </div>*@
+
 
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="ibox float-e-margins">
                                                     <div class="ibox-title">
-                                                        @*<h5>Match</h5>
-                                                            <p class="pull-right">
-                                                                <span class="location"><strong>Los Angeles</strong></span>
-                                                                <span> - </span>
-                                                                <span class="date dateMatch">11/10/2016</span>
-                                                            </p>*@
+
+                                                        <div class="form-group"><label>Location</label> <input name="location_input" id="location_input" type="text" placeholder="Enter location" class="form-control" required></div>
                                                     </div>
+
+                                                    <div class="col-sm-12 ibox-content">
+                                                        <label class="font-noraml">Player 1</label>
+                                                        <select id="player1-select" class="form-control" name="player1-select">
+                                                            <option value="">New Player</option>
+                                                        </select>
+                                                        <input id="p1Name_input" name="p1Name_input" class="col-lg-12 form-control" type="text" placeholder="Player 1" required/>
+
+                                                        <label class="font-noraml">Player 2</label>
+                                                        <select id="player2-select" class="form-control" name="player2-select">
+                                                            <option value="">New Player</option>
+                                                        </select>
+                                                        <input id="p2Name_input" name="p2Name_input" class="col-lg-12 form-control" type="text" placeholder="Player 2" required/>
+                                                    </div>
+
                                                     <div class="ibox-content">
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>#</th>
-                                                                    <th>Name</th>
+
+                                                                    <th>Player</th>
                                                                     <th>Set 1</th>
                                                                     <th>Set 2</th>
                                                                     <th>Set 3</th>
@@ -82,28 +114,26 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td>1</td>
-                                                                    <td id="p1Name_input"><input class="col-lg-10 form-control" type="text" placeholder="Player 1" /></td>
-                                                                    <td id="p1Set1_input"><input class="col-sm-2 form-control" type="number" placeholder="0" /></td>
-                                                                    <td id="p1Set2_input"><input class="col-sm-2 form-control" type="number" placeholder="0" /></td>
-                                                                    <td id="p1Set3_input"><input class="form-control" type="number" placeholder="0" /></td>
-                                                                    <td id="winner1"><input class="col-sm-8" type="radio" value="true" /></td>
+                                                                    <td><input name="p1Set1" id="p1Set1_input" class="col-sm-2 form-control" type="number" placeholder="0" min="0" max="7" required/></td>
+                                                                    <td><input name="p1Set2" id="p1Set2_input" class="col-sm-2 form-control" type="number" placeholder="0" min="0" max="7" required/></td>
+                                                                    <td><input name="p1Set3" id="p1Set3_input" class="col-sm-2 form-control" type="number" placeholder="0" min="0" max="7" required/></td>
+                                                                    <td><input id="winner1" name="winner" class="col-sm-8" type="radio" value="1" required/></td>
                                                                 </tr>
                                                             </tbody>
                                                             <tbody>
                                                                 <tr>
                                                                     <td>2</td>
-                                                                    <td id="p2Name_input"><input class="col-lg-10 form-control" type="text" placeholder="Player 2" /></td>
-                                                                    <td id="p2Set1_input"><input class="col-sm-2 form-control" type="number" placeholder="0" /></td>
-                                                                    <td id="p2Set2_input"><input class="col-sm-2 form-control" type="number" placeholder="0" /></td>
-                                                                    <td id="p2Set3_input"><input class="form-control" type="number" placeholder="0" /></td>
-                                                                    <td id="winner2"><input class="col-sm-8" type="radio" value="true" /></td>
+                                                                    <td><input name="p2Set1" id="p2Set1_input" class="col-sm-2 form-control" type="number" placeholder="0" min="0" max="7" required/></td>
+                                                                    <td><input name="p2Set2" id="p2Set2_input" class="col-sm-2 form-control" type="number" placeholder="0" min="0" max="7" required/></td>
+                                                                    <td><input name="p2Set3" id="p2Set3_input" class="col-sm-2 form-control" type="number" placeholder="0" min="0" max="7" required/></td>
+                                                                    <td><input id="winner2" name="winner" class="col-sm-8" type="radio" value="2" required/></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
                                                         <div class="form-group" id="data_1">
                                                             <label class="font-noraml">Date</label>
                                                             <div class="input-group date">
-                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" value="03/04/2014">
+                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_input" name="date_input" type="date" class="form-control" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -134,19 +164,23 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/tennis.services.js"></script>
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/chosen.jquery.js"></script>
+    <script src="~/Scripts/footable.all.min.js"></script>
+    <script src="~/Scripts/moment.js"></script>
 
     <script type="text/template" class="tableTemplate">
 
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 template">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>Match</h5>
-                        <p class="pull-right">
+                        <div class="pull-right">
                             <span class="location"><strong>Los Angeles</strong></span>
                             <span> - </span>
                             <span class="date dateMatch">11/10/2016</span>
-                        </p>
+                        </div>
                     </div>
                     <div class="ibox-content">
                         <table class="table">
@@ -181,7 +215,10 @@
                                 </tr>
                             </tbody>
                         </table>
-
+                        <div class="text-center">
+                            <button data-toggle="modal" href="#modal-form" class="btn-sm editBtn" type="button">Edit</button>
+                            <button class="btn-sm deleteBtn" type="button">Delete</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,9 +231,63 @@
     <script>
         $(document).ready(function () {
             getMatches();
-            datePicker();
+            //datePicker();
+            $('.footable').footable();
+            $('.footable2').footable();
+
+            $('#addBtn').on("click", onAddBtnClick);
+            $('#searchBtn').on("click", onSearchBtnClick);
+            $('#submitBtn').on("click", onSubmitBtnClick);
+            $('#matchTables').on("click", '.editBtn', onEditBtnClick);
+            $('#matchTables').on("click", '.deleteBtn', onDeleteBtnClick);
+            $('#modal-form').on('hidden.bs.modal', formReset);
+
         });
 
+        var player1 = null;
+        var player2 = null;
+        var winnerIs = null;
+
+        var getSearchBar = function () {
+            tennis_GetSearchBar(onGetSearchBarSuccess, onGetSearchBarError);
+        }
+
+        var onGetSearchBarSuccess = function (responseData) {
+            var data = responseData;
+            if (data) {
+                populateSearchBar('#searchPlayer', data.players);
+                populateSearchBar('#searchLocation', data.locations);
+                populateSearchBar('#searchDate', data.dates);
+            }
+        };
+
+        var onGetSearchBarError = function () {
+            console.log("Get Search Bar Error");
+        }
+
+        var onSearchBtnClick = function () {
+            
+            var data = {
+                Name: $('#searchPlayer').val(),
+                Location: $('#searchLocation').val(),
+                Date: $('#searchDate').val()
+            }
+            console.log(data);
+            tennis_matchSearch(data, onSearchSuccess, onSearchError);
+
+        }
+
+        var onSearchSuccess = function (responseData) {
+            $('.template').remove();
+            console.log("Search success");
+            loopMatches(responseData);
+        }
+
+        var onSearchError = function () {
+            console.log("Search error");
+        }
+
+        //calendar date picker
         var datePicker = function () {
             $('#data_1 .input-group.date').datepicker({
                 todayBtn: "linked",
@@ -207,22 +298,88 @@
             });
         }
 
-        var matches = [];
-
+        //get all tennis matches
         var getMatches = function () {
             tennis_GetMatches(onGetMatchesSuccess, onGetMatchesError);
         };
 
         var onGetMatchesSuccess = function (responseData) {
             if (responseData) {
-                console.log("hasvalue");
                 loopMatches(responseData);
             }
+            getSearchBar();
         };
 
         var onGetMatchesError = function () {
             console.log("Get Matches Failed")
         };
+
+
+        //get all previous tennis players
+        var getPlayers = function () {
+            tennis_GetPlayers(onGetPlayersSuccess, onGetPlayersError);
+        }
+
+        var onGetPlayersSuccess = function (responseData) {
+            //console.log(responseData);
+            loopPlayers(responseData);
+        }
+
+        var onGetPlayersError = function () {
+            console.log("Get players error");
+        }
+
+        var loopPlayers = function (players) {
+            for (var i = 0; i < Object.keys(players).length; i++) {
+                $('#player1-select').append('<option value=' + players[i].id + '>' + players[i].name + '</option>');
+                $('#player2-select').append('<option value=' + players[i].id + '>' + players[i].name + '</option>');
+            };
+        };
+
+        var populateSearchBar = function (searchId, searchBy) {
+            for (var i = 0; i < searchBy.length; i++) {
+                $(searchId).append("'<option value='" + searchBy[i] + "'>'" + searchBy[i] + "'</option>'");
+            }
+        };
+
+        $(function () {
+            $("#player1-select").change(function () {
+                var val = $(this).val();
+                var name = $(this).text();
+                if (val === "") {
+                    $("#p1Name_input").show();
+                    $("#p1Name_input").val(null);
+                    player1 = null;
+                }
+                else if (val != "") {
+                    $('#p1Name_input').val(val);
+                    $('label[for=p1Name_input]').toggleClass('error');
+                    $('label[for=p1Name_input]').remove();
+                    $("#p1Name_input").hide();
+                    $('#matchForm').attr("player1", val);
+                    player1 = val;
+                }
+            });
+        });
+
+        $(function () {
+            $("#player2-select").change(function () {
+                var val = $(this).val();
+                if (val === "") {
+                    $("#p2Name_input").show();
+                    $("#p2Name_input").val("");
+                    player2 = null;
+                }
+                else if (val != "") {
+                    $("#p2Name_input").val(val);
+                    $('label[for=p2Name_input]').toggleClass('error');
+                    $('label[for=p2Name_input]').remove();
+                    $("#p2Name_input").hide();
+                    $('#matchForm').attr("player2", val);
+                    player2 = val;
+                }
+            });
+        });
 
         var loopMatches = function (matches) {
             for (var i = 0; i < matches.length; i++) {
@@ -230,11 +387,13 @@
             }
         }
 
+
         var renderMatch = function (match) {
             var $newTable = $($('.tableTemplate').html());
+            var date = moment(match.date).format("L");
 
             $newTable.find('.location').text(match.location);
-            $newTable.find('.dateMatch').text(match.date);
+            $newTable.find('.dateMatch').text(date);
             $newTable.find('.p1Name').text(match.p1Name);
             $newTable.find('.p1Set1').text(match.p1Set1);
             $newTable.find('.p1Set2').text(match.p1Set2);
@@ -248,10 +407,235 @@
             } else {
                 $newTable.find('.winner2').text("Winner");
             };
-            $newTable.closest('.row').attr("id", match.matchId);
-            $('#matchTables').append($newTable);
-            //$newTable.appendTo('#matchTables');
+            $newTable.find('.template').attr("matchId", match.matchId);
+            $newTable.find('.template').attr("player1", match.player1);
+            $newTable.find('.template').attr("player2", match.player2);
+            $newTable.find('.template').attr("winnerId", match.winnerId);
+            $('#matchTables').append($newTable).hide().fadeIn();
         }
+
+        var onAddBtnClick = function () {
+            formReset();
+            $("#p1Name_input").show();
+            $("#p2Name_input").show();
+            getPlayers();
+        }
+
+        var onSubmitBtnClick = function (event) {
+            event.preventDefault();
+
+            if ($('#matchForm').valid()) {
+                var matchId = $('#matchForm').attr('matchId');
+                if (matchId) {
+                    matchUpdate(matchId);
+                } else {
+                    matchInsert();
+                }
+            }
+
+        }
+
+        var matchInsert = function () {
+            if (($('#matchForm').attr("player1")) && ($('#matchForm').attr("player2"))) {
+                var data = getFormData();
+                tennis_matchInsert(data, onMatchInsertSuccess, onMatchInsertError);
+            }
+
+            if (!player1) {
+                player1Insert();
+            }
+            if (!player2) {
+                player2Insert();
+            }
+
+        }
+
+        var player1Insert = function () {
+            var name = $('#p1Name_input').val();
+            //console.log(name);
+            tennis_playerInsert(name, onPlayer1InsertSuccess, onPlayer1InsertError);
+        }
+
+        var onPlayer1InsertSuccess = function (responseData) {
+            //console.log(responseData);
+            player1 = responseData;
+            $('#matchForm').attr("player1", responseData);
+            if (player1 && player2) {
+                var data = getFormData();
+                tennis_matchInsert(data, onMatchInsertSuccess, onMatchInsertError);
+            }
+        }
+
+        var onPlayer1InsertError = function () {
+            console.log("Player 1 Insert Error");
+        }
+
+
+        var player2Insert = function () {
+            var name = $('#p2Name_input').val();
+            //console.log(name);
+            tennis_playerInsert(name, onPlayer2InsertSuccess, onPlayer1InsertError);
+        }
+
+        var onPlayer2InsertSuccess = function (responseData) {
+            //console.log(responseData);
+            player2 = responseData;
+            $('#matchForm').attr("player2", responseData);
+            if (player1 && player2) {
+                var data = getFormData();
+                tennis_matchInsert(data, onMatchInsertSuccess, onMatchInsertError);
+            }
+        }
+
+        var onPlayer2InsertError = function () {
+            console.log("Player 2 Insert Error");
+        }
+
+        var onMatchInsertSuccess = function () {
+            console.log("Match Insert Success");
+            $('#modal-form').modal('toggle');
+            $('.template').fadeOut();
+            tennis_GetMatches(onGetMatchesSuccess, onGetMatchesError);
+        }
+
+        var onMatchInsertError = function () {
+            console.log("Match Insert Error");
+        }
+
+        var matchUpdate = function (matchId) {
+            var data = getFormData();
+            data.MatchId = matchId;
+            //console.log(data);
+            tennis_matchUpdate(matchId, data, onMatchUpdateSuccess, onMatchUpdateError);
+        }
+
+        var onMatchUpdateSuccess = function (responseData) {
+            console.log("Match Update Success");
+            $('#modal-form').modal('toggle');
+            $('.template').fadeOut();
+            tennis_GetMatches(onGetMatchesSuccess, onGetMatchesError);
+        }
+
+        var onMatchUpdateError = function () {
+            console.log("Match Update Error");
+        }
+
+        var getFormData = function () {
+            var checked = $('input[name=winner]:checked').val();
+            console.log(checked);
+            var winner;
+            switch (checked) {
+                case "1": {
+                    winner = $('#matchForm').attr('player1');
+                    break;
+                }
+                case "2": {
+                    winner = $('#matchForm').attr('player2');
+                    break;
+                }
+            }
+            console.log(winner);
+            var data = {
+                Location: $('#location_input').val(),
+                Date: $('#date_input').val(),
+                WinnerId: winner,
+                Player1: $('#matchForm').attr('player1'),
+                P1Set1: $('#p1Set1_input').val(),
+                P1Set2: $('#p1Set2_input').val(),
+                P1Set3: $('#p1Set3_input').val(),
+                Player2: $('#matchForm').attr('player2'),
+                P2Set1: $('#p2Set1_input').val(),
+                P2Set2: $('#p2Set2_input').val(),
+                P2Set3: $('#p2Set3_input').val()
+            }
+            return data;
+        }
+
+        var onEditBtnClick = function () {
+            getPlayers();
+            $("#p1Name_input").hide();
+            $("#p2Name_input").hide();
+            var btnClicked = $(this).closest('.row');
+            var data = getMatchData(btnClicked);
+            populateForm(data);
+            console.log("edit btn clicked");
+        }
+
+        //populate form when edit is clicked
+        var populateForm = function (data) {
+            if (data.WinnerId == data.Player1) {
+                $('#winner1').prop('checked', true);
+            } else if (data.WinnerId == data.Player2) {
+                $('#winner2').prop('checked', true);
+            }
+            var date = moment(data.Date).format('YYYY-MM-DD');
+            $('#location_input').val(data.Location);
+            $('#date_input').val(date);
+            $('#player1-select').val(data.Player1);
+            $('#p1Name_input').val(data.P1Name);
+            $('#p1Set1_input').val(data.PlSet1);
+            $('#p1Set2_input').val(data.P1Set2);
+            $('#p1Set3_input').val(data.P1Set3);
+            $('#player2-select').val(data.Player2);
+            $('#p2Name_input').val(data.P2Name);
+            $('#p2Set1_input').val(data.P2Set1);
+            $('#p2Set2_input').val(data.P2Set2);
+            $('#p2Set3_input').val(data.P2Set3);
+            $('#matchForm').attr("matchId", data.MatchId);
+            $('#matchForm').attr("player1", data.Player1);
+            $('#matchForm').attr("player2", data.Player2);
+            player1 = data.Player1;
+            player2 = data.Player2;
+        }
+
+        //get data from score card
+        var getMatchData = function (target) {
+
+            var match = {
+                MatchId: target.find('.template').attr('matchId'),
+                Location: target.find('.location').text(),
+                Date: target.find('.dateMatch').text(),
+                WinnerId: target.find('.template').attr('winnerId'),
+                Player1: target.find('.template').attr('player1'),
+                P1Name: target.find('.p1Name').text(),
+                PlSet1: target.find('.p1Set1').text(),
+                P1Set2: target.find('.p1Set2').text(),
+                P1Set3: target.find('.p1Set3').text(),
+                Player2: target.find('.template').attr('player2'),
+                P2Name: target.find('.p2Name').text(),
+                P2Set1: target.find('.p2Set1').text(),
+                P2Set2: target.find('.p2Set2').text(),
+                P2Set3: target.find('.p2Set3').text()
+            }
+            return match;
+        };
+
+        var formReset = function () {
+            $('#matchForm')[0].reset();
+            $('#matchForm').removeAttr('matchId');
+            $('#matchForm').removeAttr('player1');
+            $('#matchForm').removeAttr('player2');
+            $('label.error').remove();
+            $('.error').toggleClass('error');
+            console.log("formReset")
+        };
+
+
+
+        var onDeleteBtnClick = function () {
+            var btnClicked = $(this).closest('.row');
+            var matchId = btnClicked.find('.template').attr('matchId');
+            tennis_matchDelete(matchId, onDeleteSuccess, onDeleteError);
+        };
+
+        var onDeleteSuccess = function (responseData) {
+            console.log("Delete success");
+            $('[matchId="' + responseData + '"]').closest('.row').fadeOut();
+        };
+
+        var onDeleteError = function () {
+            console.log("Delete error");
+        };
     </script>
 
 </body>

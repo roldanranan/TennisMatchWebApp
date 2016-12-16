@@ -35,7 +35,7 @@ namespace TennisMatchWebApp.Services
                     int.TryParse(command.Parameters["@Id"].Value.ToString(), out id);
                 }
             }
-
+            _getPlayers = null;
             return id;
         }
 
@@ -72,11 +72,11 @@ namespace TennisMatchWebApp.Services
                     int.TryParse(command.Parameters["@MatchId"].Value.ToString(), out id);
                 }
             }
-
+            _getAllMatches = null;
             return id;
         }
 
-        public static int UpdateMatch(PlayerMatchScore model)
+        public static PlayerMatchScore UpdateMatch(PlayerMatchScore model)
         {
             string connString = WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
@@ -103,8 +103,8 @@ namespace TennisMatchWebApp.Services
                     command.ExecuteNonQuery();
                 }
             }
-
-            return model.MatchId;
+            _getAllMatches = null;
+            return model;
         }
 
         public static List<Match> GetMatches()
@@ -141,6 +141,7 @@ namespace TennisMatchWebApp.Services
                             match.P2Set2 = reader.GetInt32(startingIndex++);
                             match.P2Set3 = reader.GetInt32(startingIndex++);
                             match.Date = reader.GetDateTime(startingIndex++);
+                            match.Date.ToString("MM/dd/yy");
                             match.Location = reader.GetString(startingIndex++);
                             match.WinnerId = reader.GetInt32(startingIndex++);
 
@@ -156,24 +157,9 @@ namespace TennisMatchWebApp.Services
             }
             return matches;
         }
+        
 
-        //public class DataSession : DbContext
-        //{
-        //    public DbSet<Players> Players { get; set; }
-        //}
-
-        //public static List<Players> GetPlayers()
-        //{
-        //    List<Players> players = new List<Players>();
-        //    using (DataSession data = new DataSession())
-        //    {
-        //        Players player =
-        //    }
-
-        //    return players;
-        //}
-
-        public static List<Player> GetPlayers()
+        public static List<Player> GetAllPlayers()
         {
             List<Player> players = null;
             string connString = WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -192,8 +178,7 @@ namespace TennisMatchWebApp.Services
                         {
                             int startingIndex = 0;
                             Player player = new Player();
-
-                            //reader.Read();
+                            
 
                             player.Id = reader.GetInt32(startingIndex++);
                             player.Name = reader.GetString(startingIndex++);
@@ -228,8 +213,94 @@ namespace TennisMatchWebApp.Services
                     command.ExecuteNonQuery();
                 }
             }
-
+            _getAllMatches = null;
             return id;
+        }
+
+        private static List<Player> _getPlayers;
+
+        public static List<Player> GetPlayers
+        {
+            get
+            {
+                if (_getPlayers == null)
+                {
+                    List<Player> allPlayers = GetAllPlayers();
+                    _getPlayers = new List<Player>();
+                    foreach (Player p in allPlayers)
+                    {
+                        _getPlayers.Add(p);
+                    }
+                }
+                return _getPlayers;
+            }
+        }
+
+        private static List<Match> _getAllMatches;
+
+        public static List<Match> GetAllMatches
+        {
+            get
+            {
+                if(_getAllMatches == null)
+                {
+                    List<Match> allMatches = GetMatches();
+                    _getAllMatches = new List<Match>();
+                    foreach(Match match in allMatches)
+                    {
+                        _getAllMatches.Add(match);
+                    }
+                }
+                return _getAllMatches;
+            }
+        }
+    
+
+        public static IEnumerable<Match> SearchMatches(Search search)
+        {
+            List<Match> allMatches = _getAllMatches;
+
+            var matches = from match in allMatches
+                          where (match.P1Name == search.Name || match.P2Name == search.Name || search.Name == null)
+                          && (match.Location == search.Location || search.Location == null)
+                          && (match.Date == search.Date || search.Date == null)
+                          select match;
+
+
+
+            return matches;
+        }
+
+        public static IEnumerable<string> PlayerSearchBar()
+        {
+            List<Match> matches = _getAllMatches;
+            List<Player> players = _getPlayers;
+            var match = matches.Select(m => new[] { m.P1Name, m.P2Name }).SelectMany(i => i).ToList();
+            var group = from m in match
+                        orderby m
+                        group m by m into g
+                        select g.Key;
+            return group;
+        }
+
+        public static IEnumerable<string> LocationSearchBar()
+        {
+            List<Match> all = _getAllMatches;
+            var location = from s in all
+                            orderby s.Location
+                            group s by s.Location into g
+                            select g.Key;
+            return location;
+        }
+
+        public static IEnumerable<DateTime> DateSearchBar()
+        {
+            List<Match> all = _getAllMatches;
+            var date = from d in all
+                           orderby d.Date
+                           group d by d.Date into g
+                           select g.Key;
+            return date;
         }
     }
 }
